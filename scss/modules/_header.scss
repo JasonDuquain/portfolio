@@ -1,29 +1,44 @@
+html, body {
+    //height: 100%;
+}
+
 
 .header {
     height: 100vh;
-    background-image: url('../img/hero-bg.jpg');
-    background-size: cover;
-    background-attachment: fixed;
+    background: url('../img/hero-bg.jpg') center/cover fixed no-repeat;
     color: #fff;
-    padding: 2rem;
+    //padding: 2rem;
     position: relative;
     
-    &__logo-wrap {
-        
-    }
-    
-    &__logo {
-        display: block;
-        margin: 0 auto;
-        height: 6em;
-        width: 6em;
-        border-radius: 50%;
-    }
+    overflow: hidden;
     
     &__wrap {
+        padding: 2rem;
         position: absolute;
-        top: 60%;
-        transform: translateY(-50%);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+    
+    &__group {
+        position: absolute;
+        top: 50%;
+        color: #fff;
+        z-index: 2;
+    }
+    
+    &__overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: #333 center/cover fixed no-repeat;
+        z-index: 0;
+        filter: blur(4px);
+        opacity: 0;
     }
     
     &__para {
@@ -36,7 +51,6 @@
     &__para-two {
         font-size: 1.8em;
         margin-bottom: .5em;
-        
     }
     
     &__heading {
