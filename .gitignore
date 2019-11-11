@@ -11,8 +11,6 @@
 *.sass-cache
 node_modules/
 bower_components/
-img/
-**/img
 .tmp/
 
 # OS or Editor folders
