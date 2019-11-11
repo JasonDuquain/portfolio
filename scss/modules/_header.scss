@@ -3,11 +3,17 @@ html, body {
 }
 
 
+.wrap {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .header {
     height: 100vh;
     background: url('../img/hero-bg.jpg') center/cover fixed no-repeat;
     color: #fff;
-    //padding: 2rem;
     position: relative;
     
     overflow: hidden;
@@ -67,6 +73,7 @@ html, body {
         padding: .75em 1.5em;
         background-color: #d44545;
         border-radius: 3px;
+        pointer-events: none;
         
     }
     

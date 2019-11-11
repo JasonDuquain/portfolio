@@ -1,3 +1,17 @@
+.wrap {
+    z-index: 19555;
+}
+
+.verysoon a {
+    color: #fff;
+    text-decoration: underline;
+    transition: all 300ms ease-out;
+}
+
+.verysoon a:hover {
+    color: #ccc;
+}
+
 
 .nav {
     padding: 2rem;
@@ -6,7 +20,7 @@
     
     &__list {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
         transition: all 550ms ease-out;
     }
@@ -48,8 +62,7 @@ nav.sticky {
     width: 100%;
     
     .nav__item-logo {
-        margin-right: auto;
-        margin-left: auto;
+        
     }
     
     
