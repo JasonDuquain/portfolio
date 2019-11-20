@@ -1,0 +1,12 @@
+s3 cp "D:\jasonBkp\web site stuff\mySites\portfolio\index.html" s3://jasonduquain.me
+
+use this option for all files:
+
+aws s3 cp "D:\jasonBkp\web site stuff\mySites\portfolio\" s3://jasonduquain.me --recursive
+
+BUT MIGHT NEED TO USE A DIR THAT DOESNT INCLUDE SCSS AND NODE_MODULES..or figure out a command to ignore them
+
+so this works:
+
+C:\Users\jduqu>aws s3 cp "D:\jasonBkp\web site stuff\mySites\portfolio" s3://jasonduquain.me --recursive --exclude "node_modules/*" --exclude "scss/*" --exclude ".git/*" --exclude "package-lock.json"
+
