@@ -1,12 +1,31 @@
+use this for one file:
+
 s3 cp "D:\jasonBkp\web site stuff\mySites\portfolio\index.html" s3://jasonduquain.me
+
 
 use this option for all files:
 
 aws s3 cp "D:\jasonBkp\web site stuff\mySites\portfolio\" s3://jasonduquain.me --recursive
 
+
 BUT MIGHT NEED TO USE A DIR THAT DOESNT INCLUDE SCSS AND NODE_MODULES..or figure out a command to ignore them
+
 
 so this works:
 
 C:\Users\jduqu>aws s3 cp "D:\jasonBkp\web site stuff\mySites\portfolio" s3://jasonduquain.me --recursive --exclude "node_modules/*" --exclude "scss/*" --exclude ".git/*" --exclude "package-lock.json"
+
+
+build script:
+
+"upload": "aws s3 cp . s3://jasonduquain.me --recursive --exclude \"node_modules/*\" --exclude \"scss/*\" --exclude \".git/*\" --exclude \"package-lock.json\""
+
+HOWEVER NONE OF THESE DIRs contain DIRs..so if that is ever the case (ex: a folder inside the js folder)...VERIFY that it is definitely recursive!!
+
+
+
+
+
+
+
 

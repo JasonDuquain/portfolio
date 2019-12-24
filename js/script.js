@@ -4,16 +4,23 @@
 
 
 
+let docBody = document.body;
+let docElement = document.documentElement;
+
+
 
 /***********   STICKY NAV  ***************/
 let header = document.querySelector('.header');
 let nav = document.querySelector('.nav');
+let navHeight = nav.getBoundingClientRect().height;
 
 document.addEventListener('scroll', (e) => {
     if (header.getBoundingClientRect().bottom <= 0) {
         nav.classList.add('sticky');
+        docBody.style.paddingTop = `${navHeight}px`;
     } else {
         nav.classList.remove('sticky');
+        docBody.style.paddingTop = 0;
         
     }
 });
@@ -78,3 +85,131 @@ class Scroller {
 
 var scroller = new Scroller();  
 scroller.init();
+
+
+/*****  vara.js svg wrting animation  ******/
+
+var fontSize = 50;
+
+var vara = new Vara(
+    ".header__heading",
+    "js/SatisfySL.json",
+    [
+        {
+            text : "Creative",
+            y: 0,
+            fromCurrentPosition: { y: false},
+            duration: 2000
+        }
+
+    ],
+
+    {
+        strokeWidth: 2,
+        color: "#fff",
+        fontSize: 60
+    }
+
+);
+        
+vara.animationEnd(function() {
+    
+    /****** Typing text ******/
+    const typedTextSpan = document.querySelector(".header__heading--two");
+    const cursorSpan = document.querySelector(".header__heading-cursor");
+
+    const textArray = ["developer", "designer", "developer"];
+    const typingDelay = 150;
+    const erasingDelay = 75;
+    const newTextDelay = 800; // Delay between current and next text
+    let textArrayIndex = 0;
+    let charIndex = 0;
+    
+    let totalChars = 0;
+    
+    setTimeout(type, 500)
+    
+    function type() {
+        
+        totalChars++;
+        
+        if (textArrayIndex === textArray.length) {
+            return;
+        }
+        
+        if (charIndex < textArray[textArrayIndex].length) {
+            
+            cursorSpan.style.opacity = 1;
+
+            if (!cursorSpan.classList.contains('typing')) {
+                cursorSpan.classList.add('typing');
+            } 
+            
+            typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+            charIndex++;
+            
+            // make sure it does not stop the 1st time 'developer' is typed
+            if (totalChars > 19 && typedTextSpan.textContent === 'developer') {
+                cursorSpan.classList.remove('typing');
+                return;
+            }
+            
+            var clearIt = setTimeout(type, typingDelay);
+
+        } else {
+            cursorSpan.classList.remove('typing');
+            setTimeout(erase, newTextDelay);
+            //clearInterval(clearIt);
+        }
+    }
+
+    function erase() {
+        if (charIndex > 0) {
+
+            if (!cursorSpan.classList.contains('typing')) {
+                cursorSpan.classList.add('typing');
+            } 
+
+            typedTextSpan.textContent = textArray[textArrayIndex].slice(0, charIndex - 1);
+            charIndex--;
+            setTimeout(erase, erasingDelay);
+        } else {
+            cursorSpan.classList.remove('typing');
+            textArrayIndex++;
+
+            if (textArrayIndex >= textArray.length) {
+                textArrayIndex = 0;
+            }
+
+            setTimeout(type, typingDelay);
+
+        }
+    }
+    
+    
+    /*var erase = true;
+    vara.animationEnd(function(i, o) {
+        if (i === "no_erase") {
+           erase = false; 
+        }
+        if (erase) {
+            o.container.style.transition = "opacity 1s 1s";
+            o.container.style.opacity = 0;
+        }
+    });*/
+
+})
+
+
+/*** Typing text ***/
+
+
+
+
+/*
+document.addEventListener("DOMContentLoaded", function() { 
+    if (textArray.length) {
+        setTimeout(type, newTextDelay)
+    }
+});
+*/
