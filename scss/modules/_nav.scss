@@ -1,5 +1,5 @@
 .wrap {
-    z-index: 19555;
+    z-index: 600;
 }
 
 .verysoon a {
@@ -14,7 +14,7 @@
 
 
 .nav {
-    padding: 2rem;
+    padding: 1em 2em;
     background-color: rgba(0,0,0,1);
     transition: all 550ms ease-out;
     
@@ -47,8 +47,9 @@
         height: 4em;
         border-radius: 50%;
         opacity: 0;
+        transform: scale(10);
         visibility: hidden;
-        transition: all 350ms ease-out 1000ms;
+        transition: all 550ms ease-out 1200ms;
     }
     
     &__link {
@@ -57,6 +58,7 @@
     
     
     &.sticky {
+        z-index: 500;
         position: fixed;
         top: 0;
         left: 0;
@@ -70,15 +72,23 @@
         }
         
         & .nav__item:nth-of-type(2) {
-            transition-delay: 150ms;
+            transition-delay: 100ms;
         }
         
-        & .nav__item:nth-of-type(4) {
-            transition-delay: 300ms;
+        & .nav__item:nth-of-type(3) {
+            transition-delay: 200ms;
         }
         
         & .nav__item:nth-of-type(5) {
-            transition-delay: 450ms;
+            transition-delay: 300ms;
+        }
+        
+        & .nav__item:nth-of-type(6) {
+            transition-delay: 400ms;
+        }
+        
+        & .nav__item:nth-of-type(7) {
+            transition-delay: 500ms;
         }
         
         & .nav__item-logo img {
@@ -87,6 +97,7 @@
             border-radius: 50%;
             opacity: 1;
             visibility: visible;
+            transform: scale(1);
         }
         
     }

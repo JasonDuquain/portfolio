@@ -13,14 +13,20 @@ let docElement = document.documentElement;
 let header = document.querySelector('.header');
 let nav = document.querySelector('.nav');
 let navHeight = nav.getBoundingClientRect().height;
+let introSect = document.querySelector('.intro');
+let introSectStyles = getComputedStyle(introSect);
+let introSectPaddingTop = introSectStyles.getPropertyValue('padding-top');
+
 
 document.addEventListener('scroll', (e) => {
     if (header.getBoundingClientRect().bottom <= 0) {
         nav.classList.add('sticky');
-        docBody.style.paddingTop = `${navHeight}px`;
+        
+        // add padding top to intro sect instead of body to stop the flicker
+        introSect.style.paddingTop = `calc(${navHeight}px + ${introSectPaddingTop})`;
     } else {
         nav.classList.remove('sticky');
-        docBody.style.paddingTop = 0;
+        introSect.style.paddingTop = '14em'
         
     }
 });
@@ -49,7 +55,6 @@ class Scroller {
     init() {
         window.addEventListener('scroll', this.onScroll.bind(this));
         let hdr = document.querySelector('header:first-of-type');
-        console.log(hdr);
         let hdrStyles = window.getComputedStyle(hdr);
         let hdrBgImg = hdrStyles.getPropertyValue('background-image');
         blur.style.backgroundImage = hdrBgImg;
@@ -88,128 +93,238 @@ scroller.init();
 
 
 /*****  vara.js svg wrting animation  ******/
-
+const headingOne = document.querySelector('.header__heading')
+const typedTextSpan = document.querySelector(".header__heading--two");
+const cursorSpan = document.querySelector(".header__heading-cursor");
 var fontSize = 50;
 
-var vara = new Vara(
-    ".header__heading",
-    "js/SatisfySL.json",
-    [
+window.addEventListener('load', runHandwriteAndTypeAnimation);
+    
+function runHandwriteAndTypeAnimation() {
+
+    if (!sessionStorage.getItem('animation')) {
+
+    var vara = new Vara(
+        ".header__heading",
+        "js/SatisfySL.json",
+        [
+            {
+                text : "Creative",
+                y: 0,
+                fromCurrentPosition: { y: false},
+                duration: 2000
+            }
+
+        ],
+
         {
-            text : "Creative",
-            y: 0,
-            fromCurrentPosition: { y: false},
-            duration: 2000
+            strokeWidth: 2,
+            color: "#fff",
+            fontSize: 60
         }
 
-    ],
+    );
 
-    {
-        strokeWidth: 2,
-        color: "#fff",
-        fontSize: 60
-    }
+    vara.animationEnd(function() {
 
-);
-        
-vara.animationEnd(function() {
-    
-    /****** Typing text ******/
-    const typedTextSpan = document.querySelector(".header__heading--two");
-    const cursorSpan = document.querySelector(".header__heading-cursor");
+        /****** Typing text ******/
+        const textArray = ["developer", "designer", "developer"];
+        const typingDelay = 150;
+        const erasingDelay = 75;
+        const newTextDelay = 800; // Delay between current and next text
+        let textArrayIndex = 0;
+        let charIndex = 0;
 
-    const textArray = ["developer", "designer", "developer"];
-    const typingDelay = 150;
-    const erasingDelay = 75;
-    const newTextDelay = 800; // Delay between current and next text
-    let textArrayIndex = 0;
-    let charIndex = 0;
-    
-    let totalChars = 0;
-    
-    setTimeout(type, 500)
-    
-    function type() {
-        
-        totalChars++;
-        
-        if (textArrayIndex === textArray.length) {
-            return;
-        }
-        
-        if (charIndex < textArray[textArrayIndex].length) {
-            
-            cursorSpan.style.opacity = 1;
+        let totalChars = 0;
 
-            if (!cursorSpan.classList.contains('typing')) {
-                cursorSpan.classList.add('typing');
-            } 
-            
-            typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-            charIndex++;
-            
-            // make sure it does not stop the 1st time 'developer' is typed
-            if (totalChars > 19 && typedTextSpan.textContent === 'developer') {
-                cursorSpan.classList.remove('typing');
+        setTimeout(type, 500)
+
+        function type() {
+
+            totalChars++;
+
+            if (textArrayIndex === textArray.length) {
                 return;
             }
-            
-            var clearIt = setTimeout(type, typingDelay);
 
-        } else {
-            cursorSpan.classList.remove('typing');
-            setTimeout(erase, newTextDelay);
-            //clearInterval(clearIt);
-        }
-    }
+            if (charIndex < textArray[textArrayIndex].length) {
 
-    function erase() {
-        if (charIndex > 0) {
+                cursorSpan.style.opacity = 1;
 
-            if (!cursorSpan.classList.contains('typing')) {
-                cursorSpan.classList.add('typing');
-            } 
+                if (!cursorSpan.classList.contains('typing')) {
+                    cursorSpan.classList.add('typing');
+                } 
 
-            typedTextSpan.textContent = textArray[textArrayIndex].slice(0, charIndex - 1);
-            charIndex--;
-            setTimeout(erase, erasingDelay);
-        } else {
-            cursorSpan.classList.remove('typing');
-            textArrayIndex++;
+                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
 
-            if (textArrayIndex >= textArray.length) {
-                textArrayIndex = 0;
+                // make sure it does not stop the 1st time 'developer' is typed
+                if (totalChars > 19 && typedTextSpan.textContent === 'developer') {
+                    cursorSpan.classList.remove('typing');
+                    return;
+                }
+
+                var clearIt = setTimeout(type, typingDelay);
+
+            } else {
+                cursorSpan.classList.remove('typing');
+                setTimeout(erase, newTextDelay);
             }
-
-            setTimeout(type, typingDelay);
-
         }
+
+        function erase() {
+            if (charIndex > 0) {
+
+                if (!cursorSpan.classList.contains('typing')) {
+                    cursorSpan.classList.add('typing');
+                } 
+
+                typedTextSpan.textContent = textArray[textArrayIndex].slice(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, erasingDelay);
+            } else {
+                cursorSpan.classList.remove('typing');
+                textArrayIndex++;
+
+                if (textArrayIndex >= textArray.length) {
+                    textArrayIndex = 0;
+                }
+
+                setTimeout(type, typingDelay);
+            }
+        }
+
+        /*var erase = true;
+        vara.animationEnd(function(i, o) {
+            if (i === "no_erase") {
+               erase = false; 
+            }
+            if (erase) {
+                o.container.style.transition = "opacity 1s 1s";
+                o.container.style.opacity = 0;
+            }
+        });*/
+
+    });
+
+    } else {
+        /*** this might be an issue if the font takes long to load...TEST ON MOBILE...if so consider hosting font locally ***/
+        headingOne.style.fontFamily = "Satisfy, cursive";
+        headingOne.style.fontSize = "60px";
+        headingOne.textContent = 'Creative';
+        typedTextSpan.textContent = 'DEVELOPER'
+        typedTextSpan.style.transform = 'translateX(1em)'
     }
-    
-    
-    /*var erase = true;
-    vara.animationEnd(function(i, o) {
-        if (i === "no_erase") {
-           erase = false; 
-        }
-        if (erase) {
-            o.container.style.transition = "opacity 1s 1s";
-            o.container.style.opacity = 0;
-        }
-    });*/
 
-})
+    // Set sesion storage after 1st run of the animation
+    let oneTime = sessionStorage.setItem('animation', 'yes');
+}
 
 
-/*** Typing text ***/
+/********  ELIMCHAN animation  ********/
 
+/* 
 
+"Uncaught ReferenceError: CSSRulePlugin is not defined"
+Usually that error happens because your GSAP getRule() code is running before your CSS your trying to reference in your GSAP code CSSRulePlugin.getRule(). So if your JS is trying to getRule() that hasnt been loaded in to memory then you will get that error about accessing the CSS Rules.
 
+You might want to add a window load event. The reason being is that DOM ready doesnt check for external CSS files being loaded. That check happens with the window load event which makes sure all external aseets like images, links, fonts, CSS stylesheets, and JS scripts are loaded.
 
-/*
-document.addEventListener("DOMContentLoaded", function() { 
-    if (textArray.length) {
-        setTimeout(type, newTextDelay)
-    }
-});
+ALSO MAKE SURE YOU USE 'cssRule' in the tweens!!!
+
+also make sure all CSS transtion properties are removed!!!
+
 */
+
+let introImageWrap = document.querySelector('.intro__image-wrap');
+let introSummary = document.querySelector('.intro__summary');
+let introImage = document.querySelector('.intro__image');
+let introBefore = CSSRulePlugin.getRule('.intro__image-wrap::before');
+
+let tl = gsap.timeline();
+
+tl.to(introBefore, {
+    duration: 2,
+    cssRule: {
+        left: '100%',
+        right: '-100%'
+    },
+    ease: Power4
+})
+.to(introImageWrap, {
+    x: 0,
+    duration: 3
+}, "<")
+.to(introImage, {
+    opacity: 1,
+    visibility: 'visible'
+}, ">-2.2")
+.to('.intro__paragraph', {
+    y: 0,
+    stagger: 0.3,
+    ease: 'Power4.in'
+}, ">-.3")
+
+if ("IntersectionObserver" in window) {
+    const appearOptions = {
+        threshold: .85
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            
+            /* i had issues embedding the tweens in here so i just am controlling play/pause and putting tweens outside the observing code..see rodrigo and mikels 1st two posts here: https://greensock.com/forums/topic/20831-svg-tweenmax-and-intersection-observer */
+            
+            if (!entry.isIntersecting) {
+                tl.pause(0);
+            } else {
+                console.log(entry.target);
+                tl.play();
+                observer.unobserve(entry.target);
+            }
+        })
+    }, appearOptions)
+
+    observer.observe(introImageWrap)
+
+} else {
+    /*** Fallback for older browsers ****/
+}
+
+
+
+
+    
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,8 +1,3 @@
-html, body {
-    //height: 100%;
-    
-}
-
 
 .wrap {
     position: absolute;
@@ -63,8 +58,9 @@ html, body {
     }
     
     &__heading {
+        //font-family: 'Satisfy', cursive;
+        //font-size: 60px;
         display: inline-block;
-        //font-size: 3.8em;
         font-weight: 300;
         margin-bottom: .5em;
     }
